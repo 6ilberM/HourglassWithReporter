@@ -4,18 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Hourglass.Timing.Reporting;
+
 namespace Hourglass.Timing;
 
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-
 using Extensions;
 using Properties;
 using Serialization;
 
 // ReSharper disable ExceptionNotDocumented
-
 /// <summary>
 /// A countdown timer.
 /// </summary>
@@ -44,8 +44,7 @@ public sealed class Timer : TimerBase
     /// </summary>
     /// <param name="timerInfo">A <see cref="TimerInfo"/> representing the state of the <see
     /// cref="Timer"/>.</param>
-    public Timer(TimerInfo timerInfo)
-        : base(timerInfo)
+    public Timer(TimerInfo timerInfo) : base(timerInfo)
     {
         TimerStart = TimerStart.FromTimerStartInfo(timerInfo.TimerStart);
         Options = TimerOptions.FromTimerOptionsInfo(timerInfo.Options) ?? new();
@@ -330,6 +329,25 @@ public sealed class Timer : TimerBase
             nameof(TimeLeftAsString),
             nameof(TimeElapsedAsString),
             nameof(TimeExpiredAsString));
+
+        if (string.IsNullOrEmpty(Options.Title))
+        {
+            return;
+        }
+
+        if (Options.Title != "focus")
+        {
+            return;
+        }
+
+        if (_lastBroadcastTime == TimeLeftAsString && _lastBroadcastState == State)
+        {
+            return;
+        }
+
+        _lastBroadcastTime = TimeLeftAsString;
+        _lastBroadcastState = State;
+        StreamReporter.BroadcastTimerState("focus", TimeLeftAsString, TimeLeftAsPercentage, State.ToString());
     }
 
     /// <summary>
@@ -438,7 +456,11 @@ public sealed class Timer : TimerBase
 
     private EndTimeFormatState _endTimeFormatState;
     private DateTime? _endTimeCached;
+
     private string _endTimeFormatted = string.Empty;
+
+    private string _lastBroadcastTime = string.Empty;
+    private TimerState _lastBroadcastState = TimerState.Stopped;
 
     private void ResetLastEndTime()
     {

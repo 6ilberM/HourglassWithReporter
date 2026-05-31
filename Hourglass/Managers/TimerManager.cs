@@ -4,13 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Hourglass.Timing.Reporting;
+
 namespace Hourglass.Managers;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-
 using Properties;
 using Timing;
 using Windows;
@@ -73,6 +74,8 @@ public sealed class TimerManager : Manager
     {
         _timers.Clear();
         _timers.AddRange(Settings.Default.Timers);
+
+        StreamReporter.Initialize();
     }
 
     /// <inheritdoc />

@@ -1,127 +1,128 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-  <PropertyGroup>
-    <TargetFramework>net481</TargetFramework>
-    <ProjectGuid>{4E327D2C-9171-4596-82C5-A9C3CF5028E4}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <UseWPF>true</UseWPF>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Configurations>Debug;Release;Release Portable;Debug Portable</Configurations>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(Configuration.Contains('Portable')) ">
-    <Portable> Portable</Portable>
-  </PropertyGroup> 
-  <PropertyGroup>
-    <AssemblyTitle>Hourglass$(Portable)</AssemblyTitle>
-    <Product>Hourglass$(Portable)</Product>
-    <Company>Chris Dziemborowicz, Ivan Ivon</Company>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <Copyright>Copyright © 2021 Chris Dziemborowicz, 2024-$(CurrentYear) Ivan Ivon</Copyright>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
-    <FileVersion>$(Version)</FileVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug Portable|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <DefineConstants>DEBUG;PORTABLE;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DisableDiagnosticTracing>true</DisableDiagnosticTracing>
-    <Optimize>true</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Portable|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DisableDiagnosticTracing>true</DisableDiagnosticTracing>
-    <Optimize>true</Optimize>
-    <DefineConstants>PORTABLE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
-    <ApplicationManifest>Properties\App.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="UIAutomationProvider" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Settings.cs">
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <None Update="ngen-Hourglass.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <None Include="Lib\TaskDialog\github.url" />
-    <None Include="Lib\WindowsVirtualDesktopHelper\github.url" />
-    <None Include="Properties\App.manifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AppIcon.ico" />
-    <Content Include="Resources\BeepLoud.wav" />
-    <Content Include="Resources\BeepNormal.wav" />
-    <Content Include="Resources\BeepQuiet.wav" />
-    <None Include="Resources\MergeIcons.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\MergeIcons.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\License.txt" />
-    <None Include="Resources\TrayIcon.ico" />
-    <Resource Include="Resources\StartIcon.ico" />
-    <Resource Include="Resources\StartIconGrayed.ico" />
-    <Resource Include="Resources\PauseIcon.ico" />
-    <Resource Include="Resources\PauseIconGrayed.ico" />
-    <Resource Include="Resources\ResumeIcon.ico" />
-    <Resource Include="Resources\ResumeIconGrayed.ico" />
-    <Resource Include="Resources\StopIcon.ico" />
-    <Resource Include="Resources\StopIconGrayed.ico" />
-    <Resource Include="Resources\RestartIcon.ico" />
-    <Resource Include="Resources\RestartIconGrayed.ico" />
-    <None Include="$(ProjectDir)Resources\*.ico" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="Resources\Usage.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="IsExternalInit" Version="1.0.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="NAudio" Version="2.3.0" />
-    <PackageReference Include="NAudio.Vorbis.Latest" Version="1.6.0" />
-  </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call &quot;$(MSBuildProjectDirectory)\$(OutputPath)Resources\MergeIcons.bat&quot;" />
-  </Target>
+    <PropertyGroup>
+        <TargetFramework>net481</TargetFramework>
+        <ProjectGuid>{4E327D2C-9171-4596-82C5-A9C3CF5028E4}</ProjectGuid>
+        <OutputType>WinExe</OutputType>
+        <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <UseWPF>true</UseWPF>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Configurations>Debug;Release;Release Portable;Debug Portable</Configurations>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" $(Configuration.Contains('Portable')) ">
+        <Portable>Portable</Portable>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyTitle>Hourglass$(Portable)</AssemblyTitle>
+        <Product>Hourglass$(Portable)</Product>
+        <Company>Chris Dziemborowicz, Ivan Ivon</Company>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <Copyright>Copyright © 2021 Chris Dziemborowicz, 2024-$(CurrentYear) Ivan Ivon</Copyright>
+        <AssemblyVersion>$(Version)</AssemblyVersion>
+        <FileVersion>$(Version)</FileVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug Portable|AnyCPU' ">
+        <DebugType>full</DebugType>
+        <DefineConstants>DEBUG;PORTABLE;TRACE</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <DisableDiagnosticTracing>true</DisableDiagnosticTracing>
+        <Optimize>true</Optimize>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Portable|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <DisableDiagnosticTracing>true</DisableDiagnosticTracing>
+        <Optimize>true</Optimize>
+        <DefineConstants>PORTABLE</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
+        <ApplicationManifest>Properties\App.manifest</ApplicationManifest>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Microsoft.VisualBasic"/>
+        <Reference Include="PresentationCore"/>
+        <Reference Include="PresentationFramework"/>
+        <Reference Include="System.Configuration"/>
+        <Reference Include="System.Management"/>
+        <Reference Include="System.Net.Http"/>
+        <Reference Include="System.Windows.Forms"/>
+        <Reference Include="System.Xaml"/>
+        <Reference Include="UIAutomationProvider"/>
+        <Reference Include="WindowsBase"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Settings.cs">
+            <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Settings.Designer.cs">
+            <DesignTimeSharedInput>True</DesignTimeSharedInput>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
+        <None Update="ngen-Hourglass.bat">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Properties\Settings.settings">
+            <Generator>SettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <None Include="Lib\TaskDialog\github.url"/>
+        <None Include="Lib\WindowsVirtualDesktopHelper\github.url"/>
+        <None Include="Properties\App.manifest"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Resources\AppIcon.ico"/>
+        <Content Include="Resources\BeepLoud.wav"/>
+        <Content Include="Resources\BeepNormal.wav"/>
+        <Content Include="Resources\BeepQuiet.wav"/>
+        <None Include="Resources\MergeIcons.bat">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Resources\MergeIcons.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="Resources\License.txt"/>
+        <None Include="Resources\TrayIcon.ico"/>
+        <Resource Include="Resources\StartIcon.ico"/>
+        <Resource Include="Resources\StartIconGrayed.ico"/>
+        <Resource Include="Resources\PauseIcon.ico"/>
+        <Resource Include="Resources\PauseIconGrayed.ico"/>
+        <Resource Include="Resources\ResumeIcon.ico"/>
+        <Resource Include="Resources\ResumeIconGrayed.ico"/>
+        <Resource Include="Resources\StopIcon.ico"/>
+        <Resource Include="Resources\StopIconGrayed.ico"/>
+        <Resource Include="Resources\RestartIcon.ico"/>
+        <Resource Include="Resources\RestartIconGrayed.ico"/>
+        <None Include="$(ProjectDir)Resources\*.ico" CopyToOutputDirectory="PreserveNewest"/>
+        <None Include="Resources\Usage.txt"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Fleck" Version="1.2.0"/>
+        <PackageReference Include="IsExternalInit" Version="1.0.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="NAudio" Version="2.3.0"/>
+        <PackageReference Include="NAudio.Vorbis.Latest" Version="1.6.0"/>
+    </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="call &quot;$(MSBuildProjectDirectory)\$(OutputPath)Resources\MergeIcons.bat&quot;"/>
+    </Target>
 </Project>
