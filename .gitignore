@@ -402,3 +402,5 @@ FodyWeavers.xsd
 
 /Hourglass/Properties/launchSettings.json
 /.github/copilot-instructions.md
+
+.idea/*
